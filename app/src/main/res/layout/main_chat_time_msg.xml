@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+
+
+        <TextView
+            android:id="@+id/chat_time_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:lineSpacingExtra="2dp"
+            android:minHeight="50dp"
+            android:text="有大吗。。。"
+            android:textColor="#777"
+            android:textSize="18sp" />
+
+</LinearLayout>
