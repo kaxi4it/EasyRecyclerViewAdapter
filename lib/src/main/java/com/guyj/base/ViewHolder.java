@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.widget.Checkable;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
@@ -336,6 +337,21 @@ public class ViewHolder extends RecyclerView.ViewHolder
                 return false;
             }
         });
+        return this;
+    }
+
+    public ViewHolder setOnItemChildCheckChangeListener(int viewId){
+        View view = getView(viewId);
+        if (view instanceof CompoundButton){
+            ((CompoundButton) view).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (null!=easyOnItemChildCheckChangeListener){
+                        easyOnItemChildCheckChangeListener.onCheckedChanged(buttonView,getAdapterPosition(),isChecked);
+                    }
+                }
+            });
+        }
         return this;
     }
 

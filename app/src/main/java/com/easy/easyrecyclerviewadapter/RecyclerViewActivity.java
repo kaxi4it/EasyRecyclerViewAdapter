@@ -10,14 +10,19 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
 import com.guyj.CommonAdapter;
 import com.guyj.base.ViewHolder;
+import com.guyj.listener.EasyOnItemChildCheckChangeListener;
 import com.guyj.listener.EasyOnItemChildClickListener;
+import com.guyj.listener.EasyOnItemChildLongClickListener;
+import com.guyj.listener.EasyOnItemChildTouchListener;
 import com.guyj.wrapper.EmptyWrapper;
 import com.guyj.wrapper.HeaderAndFooterWrapper;
 import com.guyj.wrapper.LoadMoreWrapper;
@@ -58,8 +63,6 @@ public class RecyclerViewActivity extends AppCompatActivity
             {
                 holder.setText(R.id.id_item_list_title, s + " : " + holder.getAdapterPosition() + " , " + holder.getLayoutPosition());
                 holder.setOnItemChildClickListener(R.id.id_item_list_title);
-                holder.setOnItemChildLongClickListener(1);
-                holder.setOnItemChildTouchListener(2);
             }
         };
 
