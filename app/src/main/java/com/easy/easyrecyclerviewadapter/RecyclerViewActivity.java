@@ -58,6 +58,8 @@ public class RecyclerViewActivity extends AppCompatActivity
             {
                 holder.setText(R.id.id_item_list_title, s + " : " + holder.getAdapterPosition() + " , " + holder.getLayoutPosition());
                 holder.setOnItemChildClickListener(R.id.id_item_list_title);
+                holder.setOnItemChildLongClickListener(1);
+                holder.setOnItemChildTouchListener(2);
             }
         };
 
