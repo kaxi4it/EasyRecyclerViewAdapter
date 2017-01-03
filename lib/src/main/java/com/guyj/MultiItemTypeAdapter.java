@@ -102,13 +102,21 @@ public class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
 
     @Override
     public int getItemCount() {
-        int itemCount = mDatas.size();
-        return itemCount;
+        if (null==mDatas){
+            throw new RuntimeException("列表数据为null，集合未初始化");
+        }else{
+            int itemCount = mDatas.size();
+            return itemCount;
+        }
     }
-
 
     public List<T> getDatas() {
         return mDatas;
+    }
+
+    public void setDatas(List<T> list){
+        mDatas=list;
+        notifyDataSetChanged();
     }
 
     public MultiItemTypeAdapter addItemViewDelegate(ItemViewDelegate<T> itemViewDelegate) {

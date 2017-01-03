@@ -34,7 +34,7 @@ public class RecyclerViewActivity extends AppCompatActivity
 {
 
     private RecyclerView mRecyclerView;
-    private List<String> mDatas = new ArrayList<>();
+    private List<String> mDatas;// = new ArrayList<>();
     private CommonAdapter<String> mAdapter;
     private HeaderAndFooterWrapper mHeaderAndFooterWrapper;
     private EmptyWrapper mEmptyWrapper;
@@ -47,7 +47,7 @@ public class RecyclerViewActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recyclerview);
 
-        initDatas();
+//        initDatas();
 
         mRecyclerView = (RecyclerView) findViewById(R.id.id_recyclerview);
 //        mRecyclerView.setHasFixedSize(true);
@@ -65,6 +65,12 @@ public class RecyclerViewActivity extends AppCompatActivity
                 holder.setOnItemChildClickListener(R.id.id_item_list_title);
             }
         };
+        /**
+         * new adapter之后初始化，如果不setDatas那么会报异常并提示
+         */
+        mDatas = new ArrayList<>();
+        initDatas();
+        mAdapter.setDatas(mDatas);
 
         initHeaderAndFooter();
 
