@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 
 import com.guyj.CommonAdapter;
+import com.guyj.MultiItemTypeAdapter;
 import com.guyj.base.ViewHolder;
 import com.guyj.listener.EasyOnItemChildCheckChangeListener;
 import com.guyj.listener.EasyOnItemChildClickListener;
@@ -65,6 +66,8 @@ public class RecyclerViewActivity extends AppCompatActivity
                 holder.setOnItemChildClickListener(R.id.id_item_list_title);
             }
         };
+        mAdapter.openLoadAnimation(MultiItemTypeAdapter.SCALEIN);
+        mAdapter.isFirstOnly(false);
         /**
          * new adapter之后初始化，如果不setDatas那么会报异常并提示
          */
