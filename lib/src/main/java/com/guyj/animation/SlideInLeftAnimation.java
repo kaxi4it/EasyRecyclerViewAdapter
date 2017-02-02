@@ -6,6 +6,7 @@ import android.view.View;
 
 
 /**
+ * 借鉴于
  * https://github.com/CymChad/BaseRecyclerViewAdapterHelper
  */
 public class SlideInLeftAnimation implements BaseAnimation {

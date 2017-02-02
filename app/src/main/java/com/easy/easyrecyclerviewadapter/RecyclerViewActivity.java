@@ -7,6 +7,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.guyj.AutoLoadMoreAdapter;
 import com.guyj.CommonAdapter;
 import com.guyj.MultiItemTypeAdapter;
 import com.guyj.base.ViewHolder;
@@ -24,6 +26,7 @@ import com.guyj.listener.EasyOnItemChildCheckChangeListener;
 import com.guyj.listener.EasyOnItemChildClickListener;
 import com.guyj.listener.EasyOnItemChildLongClickListener;
 import com.guyj.listener.EasyOnItemChildTouchListener;
+import com.guyj.listener.EasyOnLoadMoreListener;
 import com.guyj.wrapper.EmptyWrapper;
 import com.guyj.wrapper.HeaderAndFooterWrapper;
 import com.guyj.wrapper.LoadMoreWrapper;
@@ -36,7 +39,7 @@ public class RecyclerViewActivity extends AppCompatActivity
 
     private RecyclerView mRecyclerView;
     private List<String> mDatas;// = new ArrayList<>();
-    private CommonAdapter<String> mAdapter;
+    private AutoLoadMoreAdapter<String> mAdapter;
     private HeaderAndFooterWrapper mHeaderAndFooterWrapper;
     private EmptyWrapper mEmptyWrapper;
     private LoadMoreWrapper mLoadMoreWrapper;
@@ -57,7 +60,7 @@ public class RecyclerViewActivity extends AppCompatActivity
 //        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
 
-        mAdapter = new CommonAdapter<String>(this, R.layout.item_list, mDatas)
+        mAdapter = new AutoLoadMoreAdapter<String>(this, R.layout.item_list, mDatas)
         {
             @Override
             protected void convert(ViewHolder holder, String s, int position)
@@ -68,6 +71,14 @@ public class RecyclerViewActivity extends AppCompatActivity
         };
         mAdapter.openLoadAnimation(MultiItemTypeAdapter.SCALEIN);
         mAdapter.isFirstOnly(false);
+        mAdapter.setOnLoadMoreListener(new EasyOnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                Log.e("loadmore","===========");
+                //假设加载失败 那么重置下loadmore状态
+//                mAdapter.resetLoadMoreState();
+            }
+        });
         /**
          * new adapter之后初始化，如果不setDatas那么会报异常并提示
          */
@@ -78,31 +89,31 @@ public class RecyclerViewActivity extends AppCompatActivity
         initHeaderAndFooter();
 
 //        initEmptyView();
+        mRecyclerView.setAdapter(mAdapter);
+//        mLoadMoreWrapper = new LoadMoreWrapper(mHeaderAndFooterWrapper);
+//        mLoadMoreWrapper.setLoadMoreView(R.layout.default_loading);
+//        mLoadMoreWrapper.setOnLoadMoreListener(new LoadMoreWrapper.OnLoadMoreListener()
+//        {
+//            @Override
+//            public void onLoadMoreRequested()
+//            {
+//                new Handler().postDelayed(new Runnable()
+//                {
+//                    @Override
+//                    public void run()
+//                    {
+//                        for (int i = 0; i < 10; i++)
+//                        {
+//                            mDatas.add("Add:" + i);
+//                        }
+//                        mLoadMoreWrapper.notifyDataSetChanged();
+//
+//                    }
+//                }, 1000);
+//            }
+//        });
 
-        mLoadMoreWrapper = new LoadMoreWrapper(mHeaderAndFooterWrapper);
-        mLoadMoreWrapper.setLoadMoreView(R.layout.default_loading);
-        mLoadMoreWrapper.setOnLoadMoreListener(new LoadMoreWrapper.OnLoadMoreListener()
-        {
-            @Override
-            public void onLoadMoreRequested()
-            {
-                new Handler().postDelayed(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        for (int i = 0; i < 10; i++)
-                        {
-                            mDatas.add("Add:" + i);
-                        }
-                        mLoadMoreWrapper.notifyDataSetChanged();
-
-                    }
-                }, 1000);
-            }
-        });
-
-        mRecyclerView.setAdapter(mLoadMoreWrapper);
+//        mRecyclerView.setAdapter(mLoadMoreWrapper);
         mAdapter.setEasyOnItemChildClickListener(new EasyOnItemChildClickListener()
         {
             @Override
@@ -168,7 +179,7 @@ public class RecyclerViewActivity extends AppCompatActivity
                 mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
                 break;
         }
-        mRecyclerView.setAdapter(mLoadMoreWrapper);
+//        mRecyclerView.setAdapter(mLoadMoreWrapper);
 
         return super.onOptionsItemSelected(item);
     }

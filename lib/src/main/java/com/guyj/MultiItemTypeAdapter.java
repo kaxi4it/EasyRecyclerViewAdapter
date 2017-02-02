@@ -30,7 +30,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.util.List;
 
 /**
- * Created by zhy on 16/4/9.
+ * Created by guyj
+ * On the basis of the zhy&cym
  */
 public class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
     protected Context mContext;
