@@ -24,7 +24,7 @@ public abstract class AutoLoadMoreAdapter<T> extends MultiItemTypeAdapter<T> {
     protected int mLayoutId;
     protected List<T> mDatas;
     protected LayoutInflater mInflater;
-    private EasyOnLoadMoreListener easyOnLoadMoreListener;
+//    private EasyOnLoadMoreListener easyOnLoadMoreListener;
     private int lastItemCount;
     private int advanceCount=4;//自动加载的提前量
 
@@ -66,27 +66,34 @@ public abstract class AutoLoadMoreAdapter<T> extends MultiItemTypeAdapter<T> {
              * lastItemCount为了让loadMore只在一个itemCount时加载一次
              * 但是网络异常 加载不小心失败后 怎么办？开放一个重置lastItemCount的方法手动调用
              */
-            if (easyOnLoadMoreListener!=null&&lastItemCount!=AutoLoadMoreAdapter.this.getItemCount()){
+//            if (easyOnLoadMoreListener!=null&&lastItemCount!=AutoLoadMoreAdapter.this.getItemCount()){
+            if (lastItemCount!=AutoLoadMoreAdapter.this.getItemCount()){
                 lastItemCount=AutoLoadMoreAdapter.this.getItemCount();
-                easyOnLoadMoreListener.onLoadMore();
+                AutoLoadMoreAdapter.this.loadMore();
+//                easyOnLoadMoreListener.onLoadMore();
             }
         }
     }
 
+    /**
+     * 重置加载更多的状态，在网络加载异常时或者有必要时调用
+     */
     public void resetLoadMoreState(){
         lastItemCount=0;
     }
 
-    public AutoLoadMoreAdapter setOnLoadMoreListener(EasyOnLoadMoreListener loadMoreListener)
-    {
-        if (loadMoreListener != null)
-        {
-            easyOnLoadMoreListener = loadMoreListener;
-        }
-        return this;
-    }
+//    public AutoLoadMoreAdapter setOnLoadMoreListener(EasyOnLoadMoreListener loadMoreListener)
+//    {
+//        if (loadMoreListener != null)
+//        {
+//            easyOnLoadMoreListener = loadMoreListener;
+//        }
+//        return this;
+//    }
 
     protected abstract void convert(ViewHolder holder, T t, int position);
+
+    protected abstract void loadMore();
 
 
 

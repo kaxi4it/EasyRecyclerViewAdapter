@@ -68,17 +68,23 @@ public class RecyclerViewActivity extends AppCompatActivity
                 holder.setText(R.id.id_item_list_title, s + " : " + holder.getAdapterPosition() + " , " + holder.getLayoutPosition());
                 holder.setOnItemChildClickListener(R.id.id_item_list_title);
             }
+
+            @Override
+            protected void loadMore() {
+                Log.e("loadmore","===========");
+                Toast.makeText(RecyclerViewActivity.this,"加载更多",Toast.LENGTH_SHORT).show();
+            }
         };
         mAdapter.openLoadAnimation(MultiItemTypeAdapter.SCALEIN);
         mAdapter.isFirstOnly(false);
-        mAdapter.setOnLoadMoreListener(new EasyOnLoadMoreListener() {
-            @Override
-            public void onLoadMore() {
-                Log.e("loadmore","===========");
-                //假设加载失败 那么重置下loadmore状态
-//                mAdapter.resetLoadMoreState();
-            }
-        });
+//        mAdapter.setOnLoadMoreListener(new EasyOnLoadMoreListener() {
+//            @Override
+//            public void onLoadMore() {
+//                Log.e("loadmore","===========");
+//                //假设加载失败 那么重置下loadmore状态
+////                mAdapter.resetLoadMoreState();
+//            }
+//        });
         /**
          * new adapter之后初始化，如果不setDatas那么会报异常并提示
          */
@@ -86,7 +92,7 @@ public class RecyclerViewActivity extends AppCompatActivity
         initDatas();
         mAdapter.setDatas(mDatas);
 
-        initHeaderAndFooter();
+//        initHeaderAndFooter();
 
 //        initEmptyView();
         mRecyclerView.setAdapter(mAdapter);
