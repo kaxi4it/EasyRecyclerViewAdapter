@@ -58,6 +58,13 @@ public abstract class AutoLoadMoreAdapter<T> extends MultiItemTypeAdapter<T> {
         });
     }
 
+    public AutoLoadMoreAdapter(final Context context, List<T> datas)
+    {
+        super(context, datas);
+        mContext = context;
+        mDatas = datas;
+    }
+
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         super.onBindViewHolder(holder, position);
@@ -80,6 +87,14 @@ public abstract class AutoLoadMoreAdapter<T> extends MultiItemTypeAdapter<T> {
      */
     public void resetLoadMoreState(){
         lastItemCount=0;
+    }
+
+    /**
+     * 设置加载提前量，默认4
+     * @param advanceCount
+     */
+    public void setAdvanceCount(int advanceCount){
+        this.advanceCount=advanceCount;
     }
 
 //    public AutoLoadMoreAdapter setOnLoadMoreListener(EasyOnLoadMoreListener loadMoreListener)

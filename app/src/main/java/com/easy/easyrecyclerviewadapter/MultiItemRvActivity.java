@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 
 import com.easy.easyrecyclerviewadapter.adapter.ChatAdapterForRv;
+import com.easy.easyrecyclerviewadapter.adapter.ChatAdapterForRv2;
 import com.easy.easyrecyclerviewadapter.bean.ChatMessage;
 import com.guyj.listener.EasyOnItemChildClickListener;
 import com.guyj.listener.EasyOnItemChildLongClickListener;
@@ -39,31 +40,31 @@ public class MultiItemRvActivity extends AppCompatActivity
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         mDatas.addAll(ChatMessage.MOCK_DATAS);
-        ChatAdapterForRv adapter = new ChatAdapterForRv(this, mDatas);
+        final ChatAdapterForRv2 adapter = new ChatAdapterForRv2(this, mDatas);
 
-        mLoadMoreWrapper = new LoadMoreWrapper(adapter);
-        mLoadMoreWrapper.setLoadMoreView(LayoutInflater.from(this).inflate(R.layout.default_loading, mRecyclerView, false));
-        mLoadMoreWrapper.setOnLoadMoreListener(new LoadMoreWrapper.OnLoadMoreListener()
-        {
-            @Override
-            public void onLoadMoreRequested()
-            {
-                new Handler().postDelayed(new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        boolean coming = Math.random() > 0.5;
-                        ChatMessage msg = null;
-                        msg = new ChatMessage(coming ? R.drawable.renma : R.drawable.xiaohei, coming ? "人马" : "xiaohei", "where are you " + mDatas.size(),
-                                null, coming?ChatMessage.RECIEVE_MSG:ChatMessage.SEND_MSG);
-                        mDatas.add(msg);
-                        mLoadMoreWrapper.notifyDataSetChanged();
-
-                    }
-                }, 1000);
-            }
-        });
+//        mLoadMoreWrapper = new LoadMoreWrapper(adapter);
+//        mLoadMoreWrapper.setLoadMoreView(LayoutInflater.from(this).inflate(R.layout.default_loading, mRecyclerView, false));
+//        mLoadMoreWrapper.setOnLoadMoreListener(new LoadMoreWrapper.OnLoadMoreListener()
+//        {
+//            @Override
+//            public void onLoadMoreRequested()
+//            {
+//                new Handler().postDelayed(new Runnable()
+//                {
+//                    @Override
+//                    public void run()
+//                    {
+//                        boolean coming = Math.random() > 0.5;
+//                        ChatMessage msg = null;
+//                        msg = new ChatMessage(coming ? R.drawable.renma : R.drawable.xiaohei, coming ? "人马" : "xiaohei", "where are you " + mDatas.size(),
+//                                null, coming?ChatMessage.RECIEVE_MSG:ChatMessage.SEND_MSG);
+//                        mDatas.add(msg);
+//                        mLoadMoreWrapper.notifyDataSetChanged();
+//
+//                    }
+//                }, 1000);
+//            }
+//        });
 
         adapter.setEasyOnItemChildClickListener(new EasyOnItemChildClickListener()
         {
@@ -71,7 +72,8 @@ public class MultiItemRvActivity extends AppCompatActivity
             public void onClick(View view, int position) {
                 switch (view.getId()){
                     case R.id.chat_send_content:
-                        Toast.makeText(MultiItemRvActivity.this, "Click Send:" + position , Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MultiItemRvActivity.this, "重置加载状态+Click Send:" + position , Toast.LENGTH_SHORT).show();
+                        adapter.resetLoadMoreState();
                         break;
                     case R.id.chat_from_content:
                         Toast.makeText(MultiItemRvActivity.this, "Click From:" + position , Toast.LENGTH_SHORT).show();
@@ -92,7 +94,8 @@ public class MultiItemRvActivity extends AppCompatActivity
                 return false;
             }
         });
-        mRecyclerView.setAdapter(mLoadMoreWrapper);
+//        mRecyclerView.setAdapter(mLoadMoreWrapper);
+        mRecyclerView.setAdapter(adapter);
     }
 
 

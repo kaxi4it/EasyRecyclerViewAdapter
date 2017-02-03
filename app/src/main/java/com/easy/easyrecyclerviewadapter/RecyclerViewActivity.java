@@ -124,7 +124,8 @@ public class RecyclerViewActivity extends AppCompatActivity
         {
             @Override
             public void onClick(View view, int position) {
-                Toast.makeText(RecyclerViewActivity.this, "pos = " + position, Toast.LENGTH_SHORT).show();
+                Toast.makeText(RecyclerViewActivity.this, "重置加载更多+pos = " + position, Toast.LENGTH_SHORT).show();
+                mAdapter.resetLoadMoreState();
                 mAdapter.notifyItemRemoved(position);
             }
         });
