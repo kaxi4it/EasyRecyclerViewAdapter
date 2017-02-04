@@ -68,6 +68,7 @@ public abstract class AutoLoadMoreAdapter<T> extends MultiItemTypeAdapter<T> {
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         super.onBindViewHolder(holder, position);
+        Log.e("loadmore","==========="+position);
         if (position>= AutoLoadMoreAdapter.this.getItemCount()-advanceCount){
             /**
              * lastItemCount为了让loadMore只在一个itemCount时加载一次
@@ -76,7 +77,12 @@ public abstract class AutoLoadMoreAdapter<T> extends MultiItemTypeAdapter<T> {
 //            if (easyOnLoadMoreListener!=null&&lastItemCount!=AutoLoadMoreAdapter.this.getItemCount()){
             if (lastItemCount!=AutoLoadMoreAdapter.this.getItemCount()){
                 lastItemCount=AutoLoadMoreAdapter.this.getItemCount();
-                AutoLoadMoreAdapter.this.loadMore();
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        AutoLoadMoreAdapter.this.loadMore();
+                    }
+                });
 //                easyOnLoadMoreListener.onLoadMore();
             }
         }

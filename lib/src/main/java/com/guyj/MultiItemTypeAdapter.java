@@ -2,6 +2,7 @@ package com.guyj;
 
 import android.animation.Animator;
 import android.content.Context;
+import android.os.Handler;
 import android.support.annotation.IntDef;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -42,6 +43,8 @@ public class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
     protected EasyOnItemChildLongClickListener easyOnItemChildLongClickListener;
     protected EasyOnItemChildTouchListener easyOnItemChildTouchListener;
     protected EasyOnItemChildCheckChangeListener easyOnItemChildCheckChangeListener;
+
+    protected Handler mHandler=new Handler();
 //    protected OnItemClickListener mOnItemClickListener;
 
     //Animation
