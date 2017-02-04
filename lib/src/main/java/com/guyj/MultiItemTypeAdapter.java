@@ -80,8 +80,9 @@ public class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
     private Interpolator mInterpolatorDecelerated = new DecelerateInterpolator();
 
     //设置动画时间
-    public void setDuration(int duration) {
+    public MultiItemTypeAdapter setDuration(int duration) {
         this.mDuration = duration;
+        return this;
     }
 
     private int mDuration = 300;
@@ -227,7 +228,7 @@ public class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
      *
      * @param holder
      */
-    private void addAnimation(RecyclerView.ViewHolder holder) {
+    private MultiItemTypeAdapter addAnimation(RecyclerView.ViewHolder holder) {
         if (mOpenAnimationEnable) {
             if (!mFirstOnlyEnable || holder.getLayoutPosition() > mLastPosition) {
                 BaseAnimation animation = null;
@@ -242,6 +243,7 @@ public class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
                 mLastPosition = holder.getLayoutPosition();
             }
         }
+        return this;
     }
 
     /**
@@ -250,9 +252,10 @@ public class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
      * @param anim
      * @param index
      */
-    protected void startAnim(Animator anim, int index) {
+    protected MultiItemTypeAdapter startAnim(Animator anim, int index) {
         anim.setDuration(mDuration).start();
         anim.setInterpolator(mInterpolatorDecelerated);
+        return this;
     }
 
     /**
@@ -260,7 +263,7 @@ public class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
      *
      * @param animationType One of {@link #ALPHAIN}, {@link #SCALEIN}, {@link #SLIDEIN_BOTTOM}, {@link #SLIDEIN_LEFT}, {@link #SLIDEIN_RIGHT}.
      */
-    public void openLoadAnimation(@AnimationType int animationType) {
+    public MultiItemTypeAdapter openLoadAnimation(@AnimationType int animationType) {
         this.mOpenAnimationEnable = true;
         mCustomAnimation = null;
         switch (animationType) {
@@ -282,6 +285,7 @@ public class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
             default:
                 break;
         }
+        return this;
     }
 
     /**
@@ -289,16 +293,18 @@ public class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
      *
      * @param animation ObjectAnimator
      */
-    public void openLoadAnimation(BaseAnimation animation) {
+    public MultiItemTypeAdapter openLoadAnimation(BaseAnimation animation) {
         this.mOpenAnimationEnable = true;
         this.mCustomAnimation = animation;
+        return this;
     }
 
     /**
      * To open the animation when loading
      */
-    public void openLoadAnimation() {
+    public MultiItemTypeAdapter openLoadAnimation() {
         this.mOpenAnimationEnable = true;
+        return this;
     }
 
     /**
@@ -306,8 +312,9 @@ public class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
      *
      * @param firstOnly true just show anim when first loading false show anim when load the data every time
      */
-    public void isFirstOnly(boolean firstOnly) {
+    public MultiItemTypeAdapter isFirstOnly(boolean firstOnly) {
         this.mFirstOnlyEnable = firstOnly;
+        return this;
     }
 
 }

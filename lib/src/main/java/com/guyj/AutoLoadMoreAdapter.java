@@ -90,16 +90,18 @@ public abstract class AutoLoadMoreAdapter<T> extends MultiItemTypeAdapter<T> {
     /**
      * 重置加载更多的状态，在网络加载异常时或者有必要时调用
      */
-    public void resetLoadMoreState(){
+    public AutoLoadMoreAdapter resetLoadMoreState(){
         lastItemCount=0;
+        return this;
     }
 
     /**
      * 设置加载提前量，默认4
      * @param advanceCount
      */
-    public void setAdvanceCount(int advanceCount){
+    public AutoLoadMoreAdapter setAdvanceCount(int advanceCount){
         this.advanceCount=advanceCount;
+        return this;
     }
 
 //    public AutoLoadMoreAdapter setOnLoadMoreListener(EasyOnLoadMoreListener loadMoreListener)
