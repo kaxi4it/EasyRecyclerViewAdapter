@@ -111,10 +111,10 @@ public class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
         ViewHolder holder = ViewHolder.createViewHolder(mContext, parent, layoutId);
         onViewHolderCreated(holder,holder.getConvertView());
 //        setListener(parent, holder, viewType);
-        holder.setEasyOnItemChildClickListener(easyOnItemChildClickListener);
-        holder.setEasyOnItemChildLongClickListener(easyOnItemChildLongClickListener);
-        holder.setEasyOnItemChildTouchListener(easyOnItemChildTouchListener);
-        holder.setEasyOnItemChildCheckChangeListener(easyOnItemChildCheckChangeListener);
+        holder.zSetEasyOnItemChildClickListener(easyOnItemChildClickListener);
+        holder.zSetEasyOnItemChildLongClickListener(easyOnItemChildLongClickListener);
+        holder.zSetEasyOnItemChildTouchListener(easyOnItemChildTouchListener);
+        holder.zSetEasyOnItemChildCheckChangeListener(easyOnItemChildCheckChangeListener);
         return holder;
     }
 

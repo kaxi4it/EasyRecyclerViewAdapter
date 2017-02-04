@@ -283,16 +283,16 @@ public class ViewHolder extends RecyclerView.ViewHolder
     private EasyOnItemChildTouchListener easyOnItemChildTouchListener;
     private EasyOnItemChildCheckChangeListener easyOnItemChildCheckChangeListener;
 
-    public void setEasyOnItemChildClickListener(EasyOnItemChildClickListener easyOnItemChildClickListener){
+    public void zSetEasyOnItemChildClickListener(EasyOnItemChildClickListener easyOnItemChildClickListener){
         this.easyOnItemChildClickListener=easyOnItemChildClickListener;
     }
-    public void setEasyOnItemChildLongClickListener(EasyOnItemChildLongClickListener easyOnItemChildLongClickListener){
+    public void zSetEasyOnItemChildLongClickListener(EasyOnItemChildLongClickListener easyOnItemChildLongClickListener){
         this.easyOnItemChildLongClickListener=easyOnItemChildLongClickListener;
     }
-    public void setEasyOnItemChildTouchListener(EasyOnItemChildTouchListener easyOnItemChildTouchListener){
+    public void zSetEasyOnItemChildTouchListener(EasyOnItemChildTouchListener easyOnItemChildTouchListener){
         this.easyOnItemChildTouchListener=easyOnItemChildTouchListener;
     }
-    public void setEasyOnItemChildCheckChangeListener(EasyOnItemChildCheckChangeListener easyOnItemChildCheckChangeListener){
+    public void zSetEasyOnItemChildCheckChangeListener(EasyOnItemChildCheckChangeListener easyOnItemChildCheckChangeListener){
         this.easyOnItemChildCheckChangeListener=easyOnItemChildCheckChangeListener;
     }
 

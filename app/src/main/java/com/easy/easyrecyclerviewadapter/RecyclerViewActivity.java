@@ -71,7 +71,6 @@ public class RecyclerViewActivity extends AppCompatActivity
 
             @Override
             protected void loadMore() {
-                Log.e("loadmore","===========");
                 Toast.makeText(RecyclerViewActivity.this,"加载更多",Toast.LENGTH_SHORT).show();
                 initDatas();
                 mAdapter.notifyDataSetChanged();
