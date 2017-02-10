@@ -306,7 +306,7 @@ public class ViewHolder extends RecyclerView.ViewHolder
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (null!=easyOnItemChildClickListener&&getLayoutPosition()==getAdapterPosition()){
+                if (null!=easyOnItemChildClickListener&&getLayoutPosition()==getAdapterPosition()&&getAdapterPosition()!=-1){
                     easyOnItemChildClickListener.onClick(v,getLayoutPosition());
                 }
             }
@@ -318,7 +318,7 @@ public class ViewHolder extends RecyclerView.ViewHolder
         view.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if (null!=easyOnItemChildLongClickListener&&getLayoutPosition()==getAdapterPosition()){
+                if (null!=easyOnItemChildLongClickListener&&getLayoutPosition()==getAdapterPosition()&&getAdapterPosition()!=-1){
                     return easyOnItemChildLongClickListener.onLongClick(v,getLayoutPosition());
                 }
                 return false;
@@ -331,7 +331,7 @@ public class ViewHolder extends RecyclerView.ViewHolder
         view.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (null!=easyOnItemChildTouchListener&&getLayoutPosition()==getAdapterPosition()){
+                if (null!=easyOnItemChildTouchListener&&getLayoutPosition()==getAdapterPosition()&&getAdapterPosition()!=-1){
                     return easyOnItemChildTouchListener.onTouch(v,event,getLayoutPosition());
                 }
                 return false;
@@ -346,7 +346,7 @@ public class ViewHolder extends RecyclerView.ViewHolder
             ((CompoundButton) view).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (null!=easyOnItemChildCheckChangeListener&&getLayoutPosition()==getAdapterPosition()){
+                    if (null!=easyOnItemChildCheckChangeListener&&getLayoutPosition()==getAdapterPosition()&&getAdapterPosition()!=-1){
                         easyOnItemChildCheckChangeListener.onCheckedChanged(buttonView,getLayoutPosition(),isChecked);
                     }
                 }
