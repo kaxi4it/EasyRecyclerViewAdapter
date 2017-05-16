@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.Toast;
 
 
-import com.easy.easyrecyclerviewadapter.adapter.ChatAdapterForRv;
 import com.easy.easyrecyclerviewadapter.adapter.ChatAdapterForRv2;
 import com.easy.easyrecyclerviewadapter.bean.ChatMessage;
 import com.guyj.listener.EasyOnItemChildClickListener;

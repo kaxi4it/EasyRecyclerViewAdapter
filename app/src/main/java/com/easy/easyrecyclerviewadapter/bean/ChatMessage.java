@@ -91,7 +91,7 @@ public class ChatMessage
 		ChatMessage msg = null;
 		msg = new ChatMessage(R.drawable.xiaohei, "时间", "where are you ",
 				null, TIME_MSG);
-		MOCK_DATAS.add(msg);
+//		MOCK_DATAS.add(msg);
 		msg = new ChatMessage(R.drawable.renma, "renma", "where are you ",
 				null, SEND_MSG);
 		MOCK_DATAS.add(msg);

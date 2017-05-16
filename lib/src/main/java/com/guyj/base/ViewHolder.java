@@ -15,11 +15,14 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
+import android.widget.CheckBox;
 import android.widget.Checkable;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.RatingBar;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.guyj.listener.EasyOnItemChildCheckChangeListener;
@@ -74,6 +77,53 @@ public class ViewHolder extends RecyclerView.ViewHolder
         }
         return (T) view;
     }
+
+    public <T extends ImageView> T getImageView(int viewId) {
+        View view = mViews.get(viewId);
+        if (view == null) {
+            view = mConvertView.findViewById(viewId);
+            mViews.put(viewId, view);
+        }
+        return (T) view;
+    }
+
+    public <T extends CheckBox> T getCheckBox(int viewId) {
+        View view = mViews.get(viewId);
+        if (view == null) {
+            view = mConvertView.findViewById(viewId);
+            mViews.put(viewId, view);
+        }
+        return (T) view;
+    }
+
+    public <T extends RadioButton> T getRadioButton(int viewId) {
+        View view = mViews.get(viewId);
+        if (view == null) {
+            view = mConvertView.findViewById(viewId);
+            mViews.put(viewId, view);
+        }
+        return (T) view;
+    }
+
+    public <T extends ProgressBar> T getProgressBar(int viewId) {
+        View view = mViews.get(viewId);
+        if (view == null) {
+            view = mConvertView.findViewById(viewId);
+            mViews.put(viewId, view);
+        }
+        return (T) view;
+    }
+
+    public <T extends SeekBar> T getSeekBar(int viewId) {
+        View view = mViews.get(viewId);
+        if (view == null) {
+            view = mConvertView.findViewById(viewId);
+            mViews.put(viewId, view);
+        }
+        return (T) view;
+    }
+
+
 
     public View getConvertView()
     {
