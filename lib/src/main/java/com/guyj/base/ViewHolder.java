@@ -130,7 +130,9 @@ public class ViewHolder extends RecyclerView.ViewHolder
         return mConvertView;
     }
 
-
+    public Context getContext(){
+        return mContext;
+    }
 
 
     /****以下为辅助方法*****/
