@@ -19,6 +19,7 @@ import android.widget.CheckBox;
 import android.widget.Checkable;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RatingBar;
@@ -133,6 +134,8 @@ public class ViewHolder extends RecyclerView.ViewHolder
     public Context getContext(){
         return mContext;
     }
+
+
 
 
     /****以下为辅助方法*****/

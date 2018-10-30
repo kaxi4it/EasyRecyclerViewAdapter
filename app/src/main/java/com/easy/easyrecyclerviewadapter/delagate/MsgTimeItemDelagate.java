@@ -7,7 +7,6 @@ import com.guyj.base.ItemViewDelegate;
 import com.guyj.base.ViewHolder;
 
 /**
- * Created by zhy on 16/6/22.
  */
 public class MsgTimeItemDelagate implements ItemViewDelegate<Object>
 {

@@ -1,14 +1,11 @@
 package com.easy.easyrecyclerviewadapter;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Toast;
-
 
 import com.easy.easyrecyclerviewadapter.adapter.ChatAdapterForRv2;
 import com.easy.easyrecyclerviewadapter.bean.ChatMessage;
@@ -22,7 +19,7 @@ import java.util.List;
 public class MultiItemRvActivity extends AppCompatActivity
 {
     private RecyclerView mRecyclerView;
-
+    private GridLayoutManager mManager;
     private LoadMoreWrapper mLoadMoreWrapper;
     private List<Object> mDatas = new ArrayList<>();
 
@@ -36,8 +33,18 @@ public class MultiItemRvActivity extends AppCompatActivity
 
         mRecyclerView = (RecyclerView) findViewById(R.id.id_recyclerview);
 
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
+        mRecyclerView.setLayoutManager(mManager=new GridLayoutManager(this,2));
+        mManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                if(mDatas.get(position) instanceof ChatMessage){
+                    if (  ((ChatMessage) mDatas.get(position)).getTypeMsg()==ChatMessage.SEND_MSG){
+                        return 2;
+                    }
+                }
+                return 1;
+            }
+        });
         mDatas.addAll(ChatMessage.MOCK_DATAS);
         final ChatAdapterForRv2 adapter = new ChatAdapterForRv2(this, mDatas);
 
