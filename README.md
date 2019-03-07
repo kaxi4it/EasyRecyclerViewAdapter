@@ -28,7 +28,7 @@ allprojects {
 然后在module的gradle中添加引用
 ```java
 dependencies {
-    compile 'com.github.kaxi4it:EasyRecyclerViewAdapter:1.13'
+    compile 'com.github.kaxi4it:EasyRecyclerViewAdapter:2.0'
 }
 ```
 ##### CommonAdapter的使用
@@ -106,12 +106,21 @@ mAdapter = new AutoLoadMoreAdapter<String>(this, R.layout.item_list, mDatas)
                 holder.setOnItemChildClickListener(R.id.id_item_list_title);
             }
 
-            @Override
-            protected void loadMore() {
+            //@Override
+            //protected void loadMore() {
                 //调用加载更多的网络请求
-                Toast.makeText(RecyclerViewActivity.this,"加载更多",Toast.LENGTH_SHORT).show();
-            }
+            //    Toast.makeText(RecyclerViewActivity.this,"加载更多",Toast.LENGTH_SHORT).show();
+            //}
         };
+```
+加载更多改到监听事件里
+```java
+  mAdapter.setEasyOnLoadMoreListener(new EasyOnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+              //...onLoadMore
+            }
+        });
 ```
 当遇到网络请求加载更多出现异常等失败的情况下，默认情况下是不会再调用自动加载更多的方法，那么此时需要用户手动重置恢复自动加载更多的回调：
 ```java
