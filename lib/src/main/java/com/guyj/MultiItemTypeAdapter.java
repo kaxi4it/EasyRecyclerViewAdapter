@@ -2,7 +2,6 @@ package com.guyj;
 
 import android.animation.Animator;
 import android.content.Context;
-import android.os.Handler;
 import android.support.annotation.IntDef;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -10,7 +9,6 @@ import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
-
 
 import com.guyj.animation.AlphaInAnimation;
 import com.guyj.animation.BaseAnimation;
@@ -28,6 +26,7 @@ import com.guyj.listener.EasyOnItemChildTouchListener;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -43,9 +42,6 @@ public class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
     protected EasyOnItemChildLongClickListener easyOnItemChildLongClickListener;
     protected EasyOnItemChildTouchListener easyOnItemChildTouchListener;
     protected EasyOnItemChildCheckChangeListener easyOnItemChildCheckChangeListener;
-
-    protected Handler mHandler=new Handler();
-//    protected OnItemClickListener mOnItemClickListener;
 
     //Animation
     /**
@@ -111,7 +107,6 @@ public class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
         int layoutId = itemViewDelegate.getItemViewLayoutId();
         ViewHolder holder = ViewHolder.createViewHolder(mContext, parent, layoutId);
         onViewHolderCreated(holder,holder.getConvertView());
-//        setListener(parent, holder, viewType);
         holder.zSetEasyOnItemChildClickListener(easyOnItemChildClickListener);
         holder.zSetEasyOnItemChildLongClickListener(easyOnItemChildLongClickListener);
         holder.zSetEasyOnItemChildTouchListener(easyOnItemChildTouchListener);
@@ -126,35 +121,6 @@ public class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
     public void convert(ViewHolder holder, T t) {
         mItemViewDelegateManager.convert(holder, t, holder.getAdapterPosition());
     }
-
-    protected boolean isEnabled(int viewType) {
-        return true;
-    }
-
-
-//    protected void setListener(final ViewGroup parent, final ViewHolder viewHolder, int viewType) {
-//        if (!isEnabled(viewType)) return;
-//        viewHolder.getConvertView().setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (mOnItemClickListener != null) {
-//                    int position = viewHolder.getAdapterPosition();
-//                    mOnItemClickListener.onItemClick(v, viewHolder , position);
-//                }
-//            }
-//        });
-//
-//        viewHolder.getConvertView().setOnLongClickListener(new View.OnLongClickListener() {
-//            @Override
-//            public boolean onLongClick(View v) {
-//                if (mOnItemClickListener != null) {
-//                    int position = viewHolder.getAdapterPosition();
-//                    return mOnItemClickListener.onItemLongClick(v, viewHolder, position);
-//                }
-//                return false;
-//            }
-//        });
-//    }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
@@ -176,8 +142,20 @@ public class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
     }
 
     public void setDatas(List<T> list){
-        mDatas=list;
+        if (null==mDatas){
+            mDatas=new ArrayList<>();
+        }
+        mDatas.clear();
+        mDatas.addAll(list);
         notifyDataSetChanged();
+    }
+
+    public void setDatasWithoutNotify(List<T> list){
+        if (null==mDatas){
+            mDatas=new ArrayList<>();
+        }
+        mDatas.clear();
+        mDatas.addAll(list);
     }
 
     public MultiItemTypeAdapter addItemViewDelegate(ItemViewDelegate<T> itemViewDelegate) {
@@ -193,16 +171,6 @@ public class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
     protected boolean useItemViewDelegateManager() {
         return mItemViewDelegateManager.getItemViewDelegateCount() > 0;
     }
-
-//    public interface OnItemClickListener {
-//        void onItemClick(View view, RecyclerView.ViewHolder holder,  int position);
-//
-//        boolean onItemLongClick(View view, RecyclerView.ViewHolder holder,  int position);
-//    }
-
-//    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-//        this.mOnItemClickListener = onItemClickListener;
-//    }
 
     public void setEasyOnItemChildClickListener(EasyOnItemChildClickListener easyOnItemChildClickListener){
         this.easyOnItemChildClickListener=easyOnItemChildClickListener;

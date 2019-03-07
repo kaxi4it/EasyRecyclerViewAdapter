@@ -1,35 +1,20 @@
 package com.easy.easyrecyclerviewadapter;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.CompoundButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.guyj.AutoLoadMoreAdapter;
-import com.guyj.CommonAdapter;
-import com.guyj.MultiItemTypeAdapter;
 import com.guyj.base.ViewHolder;
-import com.guyj.listener.EasyOnItemChildCheckChangeListener;
 import com.guyj.listener.EasyOnItemChildClickListener;
-import com.guyj.listener.EasyOnItemChildLongClickListener;
-import com.guyj.listener.EasyOnItemChildTouchListener;
 import com.guyj.listener.EasyOnLoadMoreListener;
-import com.guyj.wrapper.EmptyWrapper;
-import com.guyj.wrapper.HeaderAndFooterWrapper;
-import com.guyj.wrapper.LoadMoreWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,11 +23,8 @@ public class RecyclerViewActivity extends AppCompatActivity
 {
 
     private RecyclerView mRecyclerView;
-    private List<String> mDatas;// = new ArrayList<>();
+    private List<String> mDatas = new ArrayList<>();
     private AutoLoadMoreAdapter<String> mAdapter;
-    private HeaderAndFooterWrapper mHeaderAndFooterWrapper;
-    private EmptyWrapper mEmptyWrapper;
-    private LoadMoreWrapper mLoadMoreWrapper;
 
 
     @Override
@@ -51,13 +33,10 @@ public class RecyclerViewActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recyclerview);
 
-//        initDatas();
+        initDatas();
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.id_recyclerview);
-//        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-//        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        mRecyclerView = findViewById(R.id.id_recyclerview);
+        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 3));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
 
         mAdapter = new AutoLoadMoreAdapter<String>(this, R.layout.item_list, mDatas)
@@ -69,58 +48,17 @@ public class RecyclerViewActivity extends AppCompatActivity
                 holder.setOnItemChildClickListener(R.id.id_item_list_title);
             }
 
+        };
+
+        mAdapter.setEasyOnLoadMoreListener(new EasyOnLoadMoreListener() {
             @Override
-            protected void loadMore() {
+            public void onLoadMore() {
                 Toast.makeText(RecyclerViewActivity.this,"加载更多",Toast.LENGTH_SHORT).show();
                 initDatas();
                 mAdapter.notifyDataSetChanged();
             }
-        };
-        mAdapter.openLoadAnimation(MultiItemTypeAdapter.SCALEIN);
-        mAdapter.isFirstOnly(false);
-//        mAdapter.setOnLoadMoreListener(new EasyOnLoadMoreListener() {
-//            @Override
-//            public void onLoadMore() {
-//                Log.e("loadmore","===========");
-//                //假设加载失败 那么重置下loadmore状态
-////                mAdapter.resetLoadMoreState();
-//            }
-//        });
-        /**
-         * new adapter之后初始化，如果不setDatas那么会报异常并提示
-         */
-        mDatas = new ArrayList<>();
-        initDatas();
-        mAdapter.setDatas(mDatas);
+        });
 
-//        initHeaderAndFooter();
-
-//        initEmptyView();
-        mRecyclerView.setAdapter(mAdapter);
-//        mLoadMoreWrapper = new LoadMoreWrapper(mHeaderAndFooterWrapper);
-//        mLoadMoreWrapper.setLoadMoreView(R.layout.default_loading);
-//        mLoadMoreWrapper.setOnLoadMoreListener(new LoadMoreWrapper.OnLoadMoreListener()
-//        {
-//            @Override
-//            public void onLoadMoreRequested()
-//            {
-//                new Handler().postDelayed(new Runnable()
-//                {
-//                    @Override
-//                    public void run()
-//                    {
-//                        for (int i = 0; i < 10; i++)
-//                        {
-//                            mDatas.add("Add:" + i);
-//                        }
-//                        mLoadMoreWrapper.notifyDataSetChanged();
-//
-//                    }
-//                }, 1000);
-//            }
-//        });
-
-//        mRecyclerView.setAdapter(mLoadMoreWrapper);
         mAdapter.setEasyOnItemChildClickListener(new EasyOnItemChildClickListener()
         {
             @Override
@@ -130,24 +68,8 @@ public class RecyclerViewActivity extends AppCompatActivity
                 mAdapter.notifyItemRemoved(position);
             }
         });
-    }
 
-    private void initEmptyView()
-    {
-        mEmptyWrapper = new EmptyWrapper(mAdapter);
-        mEmptyWrapper.setEmptyView(LayoutInflater.from(this).inflate(R.layout.empty_view, mRecyclerView, false));
-    }
-
-    private void initHeaderAndFooter()
-    {
-        mHeaderAndFooterWrapper = new HeaderAndFooterWrapper(mAdapter);
-
-        TextView t1 = new TextView(this);
-        t1.setText("Header 1");
-        TextView t2 = new TextView(this);
-        t2.setText("Header 2");
-        mHeaderAndFooterWrapper.addHeaderView(t1);
-        mHeaderAndFooterWrapper.addFootView(t2);
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     private void initDatas()
@@ -187,24 +109,9 @@ public class RecyclerViewActivity extends AppCompatActivity
                 mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
                 break;
         }
-//        mRecyclerView.setAdapter(mLoadMoreWrapper);
+        mRecyclerView.setAdapter(mAdapter);
 
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onStart()
-    {
-        super.onStart();
-
-
-    }
-
-    @Override
-    public void onStop()
-    {
-        super.onStop();
-
-
-    }
 }

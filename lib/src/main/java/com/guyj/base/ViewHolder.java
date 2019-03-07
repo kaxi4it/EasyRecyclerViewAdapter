@@ -1,12 +1,12 @@
 package com.guyj.base;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.annotation.IntDef;
 import android.support.v7.widget.RecyclerView;
 import android.text.util.Linkify;
 import android.util.SparseArray;
@@ -30,6 +30,13 @@ import com.guyj.listener.EasyOnItemChildCheckChangeListener;
 import com.guyj.listener.EasyOnItemChildClickListener;
 import com.guyj.listener.EasyOnItemChildLongClickListener;
 import com.guyj.listener.EasyOnItemChildTouchListener;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
+import static android.view.View.GONE;
+import static android.view.View.INVISIBLE;
+import static android.view.View.VISIBLE;
 
 
 public class ViewHolder extends RecyclerView.ViewHolder
@@ -69,6 +76,17 @@ public class ViewHolder extends RecyclerView.ViewHolder
      * @return
      */
     public <T extends View> T getView(int viewId)
+    {
+        View view = mViews.get(viewId);
+        if (view == null)
+        {
+            view = mConvertView.findViewById(viewId);
+            mViews.put(viewId, view);
+        }
+        return (T) view;
+    }
+
+    public <T extends TextView> T getTextView(int viewId)
     {
         View view = mViews.get(viewId);
         if (view == null)
@@ -149,9 +167,9 @@ public class ViewHolder extends RecyclerView.ViewHolder
         if (isVisible){
             param.height = LinearLayout.LayoutParams.WRAP_CONTENT;
             param.width = LinearLayout.LayoutParams.MATCH_PARENT;
-            itemView.setVisibility(View.VISIBLE);
+            itemView.setVisibility(VISIBLE);
         }else{
-            itemView.setVisibility(View.GONE);
+            itemView.setVisibility(GONE);
             param.height = 0;
             param.width = 0;
         }
@@ -167,95 +185,154 @@ public class ViewHolder extends RecyclerView.ViewHolder
      */
     public ViewHolder setText(int viewId, String text)
     {
-        TextView tv = getView(viewId);
-        tv.setText(text);
+        if (getView(viewId) instanceof TextView){
+            TextView tv = getView(viewId);
+            tv.setText(text);
+        }else{
+            throw new ClassCastException("ViewHolder setText 传入的控件ID 非 TextView 的子类");
+        }
         return this;
     }
 
     public ViewHolder setImageResource(int viewId, int resId)
     {
-        ImageView view = getView(viewId);
-        view.setImageResource(resId);
+        if (getView(viewId) instanceof ImageView){
+            ImageView view = getView(viewId);
+            view.setImageResource(resId);
+        }else{
+            throw new ClassCastException("ViewHolder setImageResource 传入的控件ID 非 ImageView 的子类");
+        }
         return this;
     }
 
     public ViewHolder setImageBitmap(int viewId, Bitmap bitmap)
     {
-        ImageView view = getView(viewId);
-        view.setImageBitmap(bitmap);
+        if (getView(viewId) instanceof ImageView){
+            ImageView view = getView(viewId);
+            view.setImageBitmap(bitmap);
+        }else{
+            throw new ClassCastException("ViewHolder setImageBitmap 传入的控件ID 非 ImageView 的子类");
+        }
         return this;
     }
 
     public ViewHolder setImageDrawable(int viewId, Drawable drawable)
     {
-        ImageView view = getView(viewId);
-        view.setImageDrawable(drawable);
+        if (getView(viewId) instanceof ImageView){
+            ImageView view = getView(viewId);
+            view.setImageDrawable(drawable);
+        }else{
+            throw new ClassCastException("ViewHolder setImageDrawable 传入的控件ID 非 ImageView 的子类");
+        }
         return this;
     }
 
     public ViewHolder setBackgroundColor(int viewId, int color)
     {
-        View view = getView(viewId);
-        view.setBackgroundColor(color);
+        if (getView(viewId) instanceof View){
+            View view = getView(viewId);
+            view.setBackgroundColor(color);
+        }else{
+            throw new ClassCastException("ViewHolder setBackgroundColor 传入的控件ID 非 View 的子类");
+        }
         return this;
     }
 
     public ViewHolder setBackgroundRes(int viewId, int backgroundRes)
     {
-        View view = getView(viewId);
-        view.setBackgroundResource(backgroundRes);
+        if (getView(viewId) instanceof View){
+            View view = getView(viewId);
+            view.setBackgroundResource(backgroundRes);
+        }else{
+            throw new ClassCastException("ViewHolder setBackgroundRes 传入的控件ID 非 View 的子类");
+        }
         return this;
     }
 
     public ViewHolder setTextColor(int viewId, int textColor)
     {
-        TextView view = getView(viewId);
-        view.setTextColor(textColor);
+        if (getView(viewId) instanceof TextView){
+            TextView view = getView(viewId);
+            view.setTextColor(textColor);
+        }else{
+            throw new ClassCastException("ViewHolder setTextColor 传入的控件ID 非 TextView 的子类");
+        }
         return this;
     }
 
     public ViewHolder setTextColorRes(int viewId, int textColorRes)
     {
-        TextView view = getView(viewId);
-        view.setTextColor(mContext.getResources().getColor(textColorRes));
+        if (getView(viewId) instanceof TextView){
+            TextView view = getView(viewId);
+            view.setTextColor(mContext.getResources().getColor(textColorRes));
+        }else{
+            throw new ClassCastException("ViewHolder setTextColorRes 传入的控件ID 非 TextView 的子类");
+        }
         return this;
     }
 
-    @SuppressLint("NewApi")
     public ViewHolder setAlpha(int viewId, float value)
     {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
-        {
-            getView(viewId).setAlpha(value);
-        } else
-        {
-            // Pre-honeycomb hack to set Alpha value
-            AlphaAnimation alpha = new AlphaAnimation(value, value);
-            alpha.setDuration(0);
-            alpha.setFillAfter(true);
-            getView(viewId).startAnimation(alpha);
+        if (getView(viewId) instanceof View){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+            {
+                getView(viewId).setAlpha(value);
+            } else {
+                // Pre-honeycomb hack to set Alpha value
+                AlphaAnimation alpha = new AlphaAnimation(value, value);
+                alpha.setDuration(0);
+                alpha.setFillAfter(true);
+                getView(viewId).startAnimation(alpha);
+            }
+        }else{
+            throw new ClassCastException("ViewHolder setAlpha 传入的控件ID 非 View 的子类");
         }
         return this;
     }
 
     public ViewHolder setVisible(int viewId, boolean visible)
     {
-        View view = getView(viewId);
-        view.setVisibility(visible ? View.VISIBLE : View.GONE);
+        if (getView(viewId) instanceof View) {
+            View view = getView(viewId);
+            view.setVisibility(visible ? VISIBLE : GONE);
+        }else{
+            throw new ClassCastException("ViewHolder setVisible 传入的控件ID 非 View 的子类");
+        }
+        return this;
+    }
+
+    /**
+     * @hide
+     */
+    @IntDef({VISIBLE, INVISIBLE, GONE})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface Visibility {}
+
+    public ViewHolder setVisible(int viewId,@Visibility int visible)
+    {
+        if (getView(viewId) != null) {
+            View view = getView(viewId);
+            view.setVisibility(visible);
+        }else {
+            throw new ClassCastException("ViewHolder setVisible 传入的控件ID 非 View 的子类");
+        }
         return this;
     }
 
     public ViewHolder linkify(int viewId)
     {
-        TextView view = getView(viewId);
-        Linkify.addLinks(view, Linkify.ALL);
+        if (getView(viewId) instanceof TextView) {
+            TextView view = getView(viewId);
+            Linkify.addLinks(view, Linkify.ALL);
+        }else {
+            throw new ClassCastException("ViewHolder linkify 传入的控件ID 非 TextView 的子类");
+        }
         return this;
     }
 
     public ViewHolder setTypeface(Typeface typeface, int... viewIds)
     {
-        for (int viewId : viewIds)
-        {
+        for (int viewId : viewIds) {
             TextView view = getView(viewId);
             view.setTypeface(typeface);
             view.setPaintFlags(view.getPaintFlags() | Paint.SUBPIXEL_TEXT_FLAG);
@@ -265,59 +342,91 @@ public class ViewHolder extends RecyclerView.ViewHolder
 
     public ViewHolder setProgress(int viewId, int progress)
     {
-        ProgressBar view = getView(viewId);
-        view.setProgress(progress);
+        if (getView(viewId) instanceof ProgressBar) {
+            ProgressBar view = getView(viewId);
+            view.setProgress(progress);
+        }else{
+            throw new ClassCastException("ViewHolder setProgress 传入的控件ID 非 ProgressBar 的子类");
+        }
         return this;
     }
 
     public ViewHolder setProgress(int viewId, int progress, int max)
     {
-        ProgressBar view = getView(viewId);
-        view.setMax(max);
-        view.setProgress(progress);
+        if (getView(viewId) instanceof ProgressBar) {
+            ProgressBar view = getView(viewId);
+            view.setMax(max);
+            view.setProgress(progress);
+        }else{
+            throw new ClassCastException("ViewHolder setProgress 传入的控件ID 非 ProgressBar 的子类");
+        }
         return this;
     }
 
     public ViewHolder setMax(int viewId, int max)
     {
-        ProgressBar view = getView(viewId);
-        view.setMax(max);
+        if (getView(viewId) instanceof ProgressBar) {
+            ProgressBar view = getView(viewId);
+            view.setMax(max);
+        }else{
+            throw new ClassCastException("ViewHolder setMax 传入的控件ID 非 ProgressBar 的子类");
+        }
         return this;
     }
 
     public ViewHolder setRating(int viewId, float rating)
     {
-        RatingBar view = getView(viewId);
-        view.setRating(rating);
+        if (getView(viewId) instanceof RatingBar) {
+            RatingBar view = getView(viewId);
+            view.setRating(rating);
+        }else {
+            throw new ClassCastException("ViewHolder setRating 传入的控件ID 非 RatingBar 的子类");
+        }
         return this;
     }
 
     public ViewHolder setRating(int viewId, float rating, int max)
     {
-        RatingBar view = getView(viewId);
-        view.setMax(max);
-        view.setRating(rating);
+        if (getView(viewId) instanceof RatingBar) {
+            RatingBar view = getView(viewId);
+            view.setMax(max);
+            view.setRating(rating);
+        }else {
+            throw new ClassCastException("ViewHolder setRating 传入的控件ID 非 RatingBar 的子类");
+        }
         return this;
     }
 
     public ViewHolder setTag(int viewId, Object tag)
     {
-        View view = getView(viewId);
-        view.setTag(tag);
+        if (getView(viewId) != null) {
+            View view = getView(viewId);
+            view.setTag(tag);
+        }else {
+            throw new ClassCastException("ViewHolder setTag 传入的控件ID 非 View 的子类");
+        }
         return this;
     }
 
     public ViewHolder setTag(int viewId, int key, Object tag)
     {
-        View view = getView(viewId);
-        view.setTag(key, tag);
+        if (getView(viewId) != null) {
+            View view = getView(viewId);
+            view.setTag(key, tag);
+        }else {
+            throw new ClassCastException("ViewHolder setTag 传入的控件ID 非 View 的子类");
+        }
         return this;
     }
 
     public ViewHolder setChecked(int viewId, boolean checked)
     {
-        Checkable view = (Checkable) getView(viewId);
-        view.setChecked(checked);
+        if (getView(viewId) instanceof Checkable) {
+            Checkable view = (Checkable) getView(viewId);
+            view.setChecked(checked);
+        }else {
+            throw new ClassCastException("ViewHolder setChecked 传入的控件ID 非 Checkable 的子类");
+        }
         return this;
     }
 
@@ -327,24 +436,36 @@ public class ViewHolder extends RecyclerView.ViewHolder
     public ViewHolder setOnClickListener(int viewId,
                                          View.OnClickListener listener)
     {
-        View view = getView(viewId);
-        view.setOnClickListener(listener);
+        if (getView(viewId) != null) {
+            View view = getView(viewId);
+            view.setOnClickListener(listener);
+        }else {
+	        throw new ClassCastException("ViewHolder setOnClickListener 传入的控件ID 非 View 的子类");
+        }
         return this;
     }
 
     public ViewHolder setOnTouchListener(int viewId,
                                          View.OnTouchListener listener)
     {
-        View view = getView(viewId);
-        view.setOnTouchListener(listener);
+	    if (getView(viewId) != null) {
+		    View view = getView(viewId);
+		    view.setOnTouchListener(listener);
+	    }else {
+		    throw new ClassCastException("ViewHolder setOnTouchListener 传入的控件ID 非 View 的子类");
+	    }
         return this;
     }
 
     public ViewHolder setOnLongClickListener(int viewId,
                                              View.OnLongClickListener listener)
     {
-        View view = getView(viewId);
-        view.setOnLongClickListener(listener);
+	    if (getView(viewId) != null) {
+		    View view = getView(viewId);
+		    view.setOnLongClickListener(listener);
+	    }else {
+		    throw new ClassCastException("ViewHolder setOnLongClickListener 传入的控件ID 非 View 的子类");
+	    }
         return this;
     }
 
@@ -375,58 +496,65 @@ public class ViewHolder extends RecyclerView.ViewHolder
      * @return
      */
     public ViewHolder setOnItemChildClickListener(int viewId){
-        View view = getView(viewId);
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null!=easyOnItemChildClickListener&&getLayoutPosition()==getAdapterPosition()&&getAdapterPosition()!=-1){
-                    easyOnItemChildClickListener.onClick(v,getLayoutPosition());
-                }
-            }
-        });
+	    if (getView(viewId) != null) {
+		    View view = getView(viewId);
+		    view.setOnClickListener(new View.OnClickListener() {
+			    @Override
+			    public void onClick(View v) {
+				    if (null != easyOnItemChildClickListener && getLayoutPosition() == getAdapterPosition() && getAdapterPosition() != -1) {
+					    easyOnItemChildClickListener.onClick(v, getLayoutPosition());
+				    }
+			    }
+		    });
+	    }
         return this;
     }
     public ViewHolder setOnItemChildLongClickListener(int viewId){
-        View view = getView(viewId);
-        view.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                if (null!=easyOnItemChildLongClickListener&&getLayoutPosition()==getAdapterPosition()&&getAdapterPosition()!=-1){
-                    return easyOnItemChildLongClickListener.onLongClick(v,getLayoutPosition());
-                }
-                return false;
-            }
-        });
+	    if (getView(viewId) != null) {
+		    View view = getView(viewId);
+		    view.setOnLongClickListener(new View.OnLongClickListener() {
+			    @Override
+			    public boolean onLongClick(View v) {
+				    if (null != easyOnItemChildLongClickListener && getLayoutPosition() == getAdapterPosition() && getAdapterPosition() != -1) {
+					    return easyOnItemChildLongClickListener.onLongClick(v, getLayoutPosition());
+				    }
+				    return false;
+			    }
+		    });
+	    }
         return this;
     }
     public ViewHolder setOnItemChildTouchListener(int viewId){
-        View view = getView(viewId);
-        view.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (null!=easyOnItemChildTouchListener&&getLayoutPosition()==getAdapterPosition()&&getAdapterPosition()!=-1){
-                    return easyOnItemChildTouchListener.onTouch(v,event,getLayoutPosition());
-                }
-                return false;
-            }
-        });
+	    if (getView(viewId) != null) {
+		    View view = getView(viewId);
+		    view.setOnTouchListener(new View.OnTouchListener() {
+			    @Override
+			    public boolean onTouch(View v, MotionEvent event) {
+				    if (null != easyOnItemChildTouchListener && getLayoutPosition() == getAdapterPosition() && getAdapterPosition() != -1) {
+					    return easyOnItemChildTouchListener.onTouch(v, event, getLayoutPosition());
+				    }
+				    return false;
+			    }
+		    });
+	    }
         return this;
     }
 
     public ViewHolder setOnItemChildCheckChangeListener(int viewId){
-        View view = getView(viewId);
-        if (view instanceof CompoundButton){
-            ((CompoundButton) view).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (null!=easyOnItemChildCheckChangeListener&&getLayoutPosition()==getAdapterPosition()&&getAdapterPosition()!=-1){
-                        easyOnItemChildCheckChangeListener.onCheckedChanged(buttonView,getLayoutPosition(),isChecked);
-                    }
-                }
-            });
-        }
+	    if (getView(viewId) != null) {
+		    View view = getView(viewId);
+		    if (view instanceof CompoundButton) {
+			    ((CompoundButton) view).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+				    @Override
+				    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+					    if (null != easyOnItemChildCheckChangeListener && getLayoutPosition() == getAdapterPosition() && getAdapterPosition() != -1) {
+						    easyOnItemChildCheckChangeListener.onCheckedChanged(buttonView, getLayoutPosition(), isChecked);
+					    }
+				    }
+			    });
+		    }
+	    }
         return this;
     }
-
 
 }

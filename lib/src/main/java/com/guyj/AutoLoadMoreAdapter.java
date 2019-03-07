@@ -1,15 +1,15 @@
 package com.guyj;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 
 import com.guyj.base.ItemViewDelegate;
 import com.guyj.base.ViewHolder;
 import com.guyj.listener.EasyOnLoadMoreListener;
-import com.guyj.wrapper.LoadMoreWrapper;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 /**
@@ -24,9 +24,28 @@ public abstract class AutoLoadMoreAdapter<T> extends MultiItemTypeAdapter<T> {
     protected int mLayoutId;
     protected List<T> mDatas;
     protected LayoutInflater mInflater;
-//    private EasyOnLoadMoreListener easyOnLoadMoreListener;
     private int lastItemCount;
-    private int advanceCount=4;//自动加载的提前量
+    private int advanceCount=1;//自动加载的提前量
+    private EasyOnLoadMoreListener mEasyOnLoadMoreListener;
+
+    private WeakHandler mWeakHandler= new WeakHandler(this);
+    static class WeakHandler extends Handler
+    {
+        WeakReference<AutoLoadMoreAdapter> mWeakReference;
+        public WeakHandler(AutoLoadMoreAdapter moreAdapter)
+        {
+            mWeakReference=new WeakReference<AutoLoadMoreAdapter>(moreAdapter);
+        }
+        @Override
+        public void handleMessage(Message msg)
+        {
+            AutoLoadMoreAdapter moreAdapter=mWeakReference.get();
+            if(moreAdapter!=null&&moreAdapter.getEasyOnLoadMoreListener()!=null)
+            {
+                moreAdapter.getEasyOnLoadMoreListener().onLoadMore();
+            }
+        }
+    }
 
     public AutoLoadMoreAdapter(final Context context, final int layoutId, List<T> datas)
     {
@@ -73,16 +92,9 @@ public abstract class AutoLoadMoreAdapter<T> extends MultiItemTypeAdapter<T> {
              * lastItemCount为了让loadMore只在一个itemCount时加载一次
              * 但是网络异常 加载不小心失败后 怎么办？开放一个重置lastItemCount的方法手动调用
              */
-//            if (easyOnLoadMoreListener!=null&&lastItemCount!=AutoLoadMoreAdapter.this.getItemCount()){
             if (lastItemCount!=AutoLoadMoreAdapter.this.getItemCount()){
                 lastItemCount=AutoLoadMoreAdapter.this.getItemCount();
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        AutoLoadMoreAdapter.this.loadMore();
-                    }
-                });
-//                easyOnLoadMoreListener.onLoadMore();
+                mWeakHandler.sendEmptyMessage(0);
             }
         }
     }
@@ -96,7 +108,7 @@ public abstract class AutoLoadMoreAdapter<T> extends MultiItemTypeAdapter<T> {
     }
 
     /**
-     * 设置加载提前量，默认4
+     * 设置加载提前量，默认1
      * @param advanceCount
      */
     public AutoLoadMoreAdapter setAdvanceCount(int advanceCount){
@@ -104,20 +116,13 @@ public abstract class AutoLoadMoreAdapter<T> extends MultiItemTypeAdapter<T> {
         return this;
     }
 
-//    public AutoLoadMoreAdapter setOnLoadMoreListener(EasyOnLoadMoreListener loadMoreListener)
-//    {
-//        if (loadMoreListener != null)
-//        {
-//            easyOnLoadMoreListener = loadMoreListener;
-//        }
-//        return this;
-//    }
-
     protected abstract void convert(ViewHolder holder, T t, int position);
 
-    protected abstract void loadMore();
-
-
-
+    public EasyOnLoadMoreListener getEasyOnLoadMoreListener() {
+        return mEasyOnLoadMoreListener;
+    }
+    public void setEasyOnLoadMoreListener(EasyOnLoadMoreListener mEasyOnLoadMoreListener){
+        this.mEasyOnLoadMoreListener=mEasyOnLoadMoreListener;
+    }
 
 }
