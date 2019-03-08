@@ -25,7 +25,7 @@ public abstract class AutoLoadMoreAdapter<T> extends MultiItemTypeAdapter<T> {
     protected List<T> mDatas;
     protected LayoutInflater mInflater;
     private int lastItemCount;
-    private int advanceCount=1;//自动加载的提前量
+    private int advanceCount = 1;//自动加载的提前量
     private EasyOnLoadMoreListener mEasyOnLoadMoreListener;
 
     private WeakHandler mWeakHandler= new WeakHandler(this);
@@ -40,7 +40,7 @@ public abstract class AutoLoadMoreAdapter<T> extends MultiItemTypeAdapter<T> {
         public void handleMessage(Message msg)
         {
             AutoLoadMoreAdapter moreAdapter=mWeakReference.get();
-            if(moreAdapter!=null&&moreAdapter.getEasyOnLoadMoreListener()!=null)
+            if (moreAdapter != null && moreAdapter.getEasyOnLoadMoreListener() != null)
             {
                 moreAdapter.getEasyOnLoadMoreListener().onLoadMore();
             }
@@ -60,7 +60,7 @@ public abstract class AutoLoadMoreAdapter<T> extends MultiItemTypeAdapter<T> {
             @Override
             public int getItemViewLayoutId()
             {
-                return layoutId;
+                return mLayoutId;
             }
 
             @Override
@@ -75,6 +75,11 @@ public abstract class AutoLoadMoreAdapter<T> extends MultiItemTypeAdapter<T> {
                 AutoLoadMoreAdapter.this.convert(holder, t, position);
             }
         });
+    }
+
+    public void setLayoutId(int layoutId) {
+        this.mLayoutId = layoutId;
+        notifyDataSetChanged();
     }
 
     public AutoLoadMoreAdapter(final Context context, List<T> datas)
@@ -121,8 +126,9 @@ public abstract class AutoLoadMoreAdapter<T> extends MultiItemTypeAdapter<T> {
     public EasyOnLoadMoreListener getEasyOnLoadMoreListener() {
         return mEasyOnLoadMoreListener;
     }
-    public void setEasyOnLoadMoreListener(EasyOnLoadMoreListener mEasyOnLoadMoreListener){
-        this.mEasyOnLoadMoreListener=mEasyOnLoadMoreListener;
+
+    public void setEasyOnLoadMoreListener(EasyOnLoadMoreListener mEasyOnLoadMoreListener) {
+        this.mEasyOnLoadMoreListener = mEasyOnLoadMoreListener;
     }
 
 }

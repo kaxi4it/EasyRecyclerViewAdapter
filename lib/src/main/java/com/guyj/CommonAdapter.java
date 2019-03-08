@@ -3,7 +3,6 @@ package com.guyj;
 import android.content.Context;
 import android.view.LayoutInflater;
 
-
 import com.guyj.base.ItemViewDelegate;
 import com.guyj.base.ViewHolder;
 
@@ -32,7 +31,7 @@ public abstract class CommonAdapter<T> extends MultiItemTypeAdapter<T>
             @Override
             public int getItemViewLayoutId()
             {
-                return layoutId;
+                return mLayoutId;
             }
 
             @Override

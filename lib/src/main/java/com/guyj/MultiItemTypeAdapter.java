@@ -23,6 +23,8 @@ import com.guyj.listener.EasyOnItemChildCheckChangeListener;
 import com.guyj.listener.EasyOnItemChildClickListener;
 import com.guyj.listener.EasyOnItemChildLongClickListener;
 import com.guyj.listener.EasyOnItemChildTouchListener;
+import com.guyj.listener.EasyOnViewAttachedToWindowListener;
+import com.guyj.listener.EasyOnViewDetachedFromWindowListener;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -42,6 +44,8 @@ public class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
     protected EasyOnItemChildLongClickListener easyOnItemChildLongClickListener;
     protected EasyOnItemChildTouchListener easyOnItemChildTouchListener;
     protected EasyOnItemChildCheckChangeListener easyOnItemChildCheckChangeListener;
+    protected EasyOnViewAttachedToWindowListener mEasyOnViewAttachedToWindowListener;
+    protected EasyOnViewDetachedFromWindowListener mEasyOnViewDetachedFromWindowListener;
 
     //Animation
     /**
@@ -142,17 +146,17 @@ public class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
     }
 
     public void setDatas(List<T> list){
-        if (null==mDatas){
-            mDatas=new ArrayList<>();
+        if (null == mDatas) {
+            mDatas = new ArrayList<>();
         }
         mDatas.clear();
         mDatas.addAll(list);
         notifyDataSetChanged();
     }
 
-    public void setDatasWithoutNotify(List<T> list){
-        if (null==mDatas){
-            mDatas=new ArrayList<>();
+    public void setDatasWithoutNotify(List<T> list) {
+        if (null == mDatas) {
+            mDatas = new ArrayList<>();
         }
         mDatas.clear();
         mDatas.addAll(list);
@@ -185,10 +189,29 @@ public class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
         this.easyOnItemChildCheckChangeListener=easyOnItemChildCheckChangeListener;
     }
 
+    public void setEasyOnViewAttachedToWindowListener(EasyOnViewAttachedToWindowListener mEasyOnViewAttachedToWindowListener) {
+        this.mEasyOnViewAttachedToWindowListener = mEasyOnViewAttachedToWindowListener;
+    }
+
+    public void setEasyOnViewDetachedFromWindowListener(EasyOnViewDetachedFromWindowListener mEasyOnViewDetachedFromWindowListener) {
+        this.mEasyOnViewDetachedFromWindowListener = mEasyOnViewDetachedFromWindowListener;
+    }
+
     @Override
     public void onViewAttachedToWindow(ViewHolder holder) {
         super.onViewAttachedToWindow(holder);
+        if (mEasyOnViewAttachedToWindowListener != null) {
+            mEasyOnViewAttachedToWindowListener.onViewAttachedToWindow(holder);
+        }
         addAnimation(holder);
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(ViewHolder holder) {
+        super.onViewDetachedFromWindow(holder);
+        if (mEasyOnViewDetachedFromWindowListener != null) {
+            mEasyOnViewDetachedFromWindowListener.onViewDetachedFromWindow(holder);
+        }
     }
 
     /**
