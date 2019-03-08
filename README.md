@@ -28,7 +28,7 @@ allprojects {
 然后在module的gradle中添加引用
 ```java
 dependencies {
-    compile 'com.github.kaxi4it:EasyRecyclerViewAdapter:2.0'
+    compile 'com.github.kaxi4it:EasyRecyclerViewAdapter:2.1'
 }
 ```
 ##### CommonAdapter的使用
